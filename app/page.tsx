@@ -1,6 +1,7 @@
-import {Container, Filters, ProductCard} from "@/components/shared";
+import {Container, Filters} from "@/components/shared";
 import {Title} from "@/components/shared/title";
 import {TopBar} from "@/components/shared/top-bar";
+import {ProductsGroupList} from "@/components/shared/products-group-list";
 
 export default function Home() {
     return (
@@ -10,13 +11,50 @@ export default function Home() {
             </Container>
             <TopBar/>
             <Container className="mt-10 pb-14">
-                <div className="flex gap-[60px]">
+                <div className="flex gap-[80px]">
                     <div className="w-[250px]">
                         <Filters />
                     </div>
                     <div className="flex-1">
                         <div className="flex flex-col gap-16">
-                            <ProductCard id={0} name={'Пицца Расрас'} price={100} imageUrl={'https://media.dodostatic.net/image/r:292x292/11EF12B2F6AFD043932EFBBAF24F90DF.avif'}/>
+                            <ProductsGroupList title={"Пиццы"} categoryId={1} items={[
+                                {
+                                    id: 1,
+                                    name: "Говядина с песто",
+                                    imageUrl: 'https://media.dodostatic.net/image/r:292x292/11EF12B2F6AFD043932EFBBAF24F90DF.avif',
+                                    price: 550,
+                                    items: [{price: 550}]
+                                },
+                                {
+                                    id: 1,
+                                    name: "Говядина с песто",
+                                    imageUrl: 'https://media.dodostatic.net/image/r:292x292/11EF12B2F6AFD043932EFBBAF24F90DF.avif',
+                                    price: 550,
+                                    items: [{price: 550}]
+                                },
+                                {
+                                    id: 1,
+                                    name: "Говядина с песто",
+                                    imageUrl: 'https://media.dodostatic.net/image/r:292x292/11EF12B2F6AFD043932EFBBAF24F90DF.avif',
+                                    price: 550,
+                                    items: [{price: 550}]
+                                },
+                                {
+                                    id: 1,
+                                    name: "Говядина с песто",
+                                    imageUrl: 'https://media.dodostatic.net/image/r:292x292/11EF12B2F6AFD043932EFBBAF24F90DF.avif',
+                                    price: 550,
+                                    items: [{price: 550}]
+                                },
+                                {
+                                    id: 1,
+                                    name: "Говядина с песто",
+                                    imageUrl: 'https://media.dodostatic.net/image/r:292x292/11EF12B2F6AFD043932EFBBAF24F90DF.avif',
+                                    price: 550,
+                                    items: [{price: 550}]
+                                },
+                            ]}
+                            />
                         </div>
                     </div>
                 </div>
