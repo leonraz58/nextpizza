@@ -55,6 +55,44 @@ export default function Home() {
                                 },
                             ]}
                             />
+                            <ProductsGroupList title={"Комбо"} categoryId={2} items={[
+                                {
+                                    id: 1,
+                                    name: "Говядина с песто",
+                                    imageUrl: 'https://media.dodostatic.net/image/r:292x292/11EF12B2F6AFD043932EFBBAF24F90DF.avif',
+                                    price: 550,
+                                    items: [{price: 550}]
+                                },
+                                {
+                                    id: 1,
+                                    name: "Говядина с песто",
+                                    imageUrl: 'https://media.dodostatic.net/image/r:292x292/11EF12B2F6AFD043932EFBBAF24F90DF.avif',
+                                    price: 550,
+                                    items: [{price: 550}]
+                                },
+                                {
+                                    id: 1,
+                                    name: "Говядина с песто",
+                                    imageUrl: 'https://media.dodostatic.net/image/r:292x292/11EF12B2F6AFD043932EFBBAF24F90DF.avif',
+                                    price: 550,
+                                    items: [{price: 550}]
+                                },
+                                {
+                                    id: 1,
+                                    name: "Говядина с песто",
+                                    imageUrl: 'https://media.dodostatic.net/image/r:292x292/11EF12B2F6AFD043932EFBBAF24F90DF.avif',
+                                    price: 550,
+                                    items: [{price: 550}]
+                                },
+                                {
+                                    id: 1,
+                                    name: "Говядина с песто",
+                                    imageUrl: 'https://media.dodostatic.net/image/r:292x292/11EF12B2F6AFD043932EFBBAF24F90DF.avif',
+                                    price: 550,
+                                    items: [{price: 550}]
+                                },
+                            ]}
+                            />
                         </div>
                     </div>
                 </div>
