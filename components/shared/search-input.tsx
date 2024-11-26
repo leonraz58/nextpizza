@@ -6,6 +6,7 @@ import Link from 'next/link';
 import React from 'react';
 import { useClickAway, useDebounce } from 'react-use';
 import {cn} from "@/lib/utils";
+import {Api} from "@/services/api-client";
 
 interface Props {
   className?: string;
@@ -20,6 +21,15 @@ export const SearchInput: React.FC<Props> = ({ className }) => {
   useClickAway(ref, () => {
     setFocused(false);
   });
+
+  useDebounce(
+      async () => {
+        const products = await Api.products.search(searchQuery);
+        setProducts(products);
+      },
+      100,
+      [searchQuery],
+  );
 
   const onClickItem = () => {
     setFocused(false);
