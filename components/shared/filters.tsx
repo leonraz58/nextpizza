@@ -1,6 +1,6 @@
 'use client'
 
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 
 import {Title} from './title';
 import {Input, RangeSlider} from "@/components/ui";
@@ -19,11 +19,16 @@ interface PriceProps {
 
 export const Filters: React.FC<Props> = ({className}) => {
 
-    const {ingredients, loading, onAddId, selectedIds} = useIngredients();
+    const {ingredients, loading, onAddId, selectedIngredients} = useIngredients();
 
     const [sizes, { toggle: toggleSizes }] = useSet(new Set<string>([]));
+    const [pizzaTypes, { toggle: togglePizzaTypes }] = useSet(new Set<string>([]));
 
     const [price, setPrice] = useState<PriceProps>({priceFrom: 0, priceTo: 1000});
+
+    useEffect(()=>{
+        console.log({price, pizzaTypes, sizes, selectedIngredients})
+    }, [price, pizzaTypes, sizes, selectedIngredients]);
 
     const items = ingredients.map((item) => ({value: String(item.id), text: item.name}));
 
@@ -37,6 +42,18 @@ export const Filters: React.FC<Props> = ({className}) => {
     return (
         <div className={className}>
             <Title text="Фильтрация" size="sm" className="mb-5 font-bold"/>
+
+            <CheckboxFiltersGroup
+                title="Тип теста"
+                name="sizes"
+                className="mb-5"
+                onClickCheckbox={togglePizzaTypes}
+                selected={pizzaTypes}
+                items={[
+                    { text: 'Тонкое', value: '1' },
+                    { text: 'Традиционное', value: '2' },
+                ]}
+            />
 
             <CheckboxFiltersGroup
                 title="Размеры"
@@ -81,7 +98,7 @@ export const Filters: React.FC<Props> = ({className}) => {
                                   items={items}
                                   loading={loading}
                                   onClickCheckbox={onAddId}
-                                  selected={selectedIds}
+                                  selected={selectedIngredients}
                                   name={'ingredients'}
             />
         </div>
