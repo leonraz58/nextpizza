@@ -7,6 +7,8 @@ import {Input, RangeSlider} from "@/components/ui";
 import {CheckboxFiltersGroup} from './checkbox-filters-group';
 import {useIngredients} from "@/hooks/use-ingredients";
 import {useSet} from "react-use";
+import qs from 'qs';
+import {useRouter} from "next/navigation";
 
 interface Props {
     className?: string;
@@ -19,16 +21,14 @@ interface PriceProps {
 
 export const Filters: React.FC<Props> = ({className}) => {
 
+    const router = useRouter()
+
     const {ingredients, loading, onAddId, selectedIngredients} = useIngredients();
 
     const [sizes, { toggle: toggleSizes }] = useSet(new Set<string>([]));
     const [pizzaTypes, { toggle: togglePizzaTypes }] = useSet(new Set<string>([]));
 
     const [price, setPrice] = useState<PriceProps>({priceFrom: 0, priceTo: 1000});
-
-    useEffect(()=>{
-        console.log({price, pizzaTypes, sizes, selectedIngredients})
-    }, [price, pizzaTypes, sizes, selectedIngredients]);
 
     const items = ingredients.map((item) => ({value: String(item.id), text: item.name}));
 
@@ -38,6 +38,19 @@ export const Filters: React.FC<Props> = ({className}) => {
             [name]: value,
         })
     }
+
+    useEffect(()=>{
+        const filters = {
+            ...price,
+            pizzaTypes: Array.from(pizzaTypes),
+            sizes: Array.from(sizes),
+            ingredients: Array.from(selectedIngredients)
+        }
+
+        const query = qs.stringify(filters, {arrayFormat: 'comma'})
+
+        router.push(`?${query}`)
+    }, [price, pizzaTypes, sizes, selectedIngredients, router]);
 
     return (
         <div className={className}>
@@ -87,7 +100,7 @@ export const Filters: React.FC<Props> = ({className}) => {
                     />
                 </div>
                 <RangeSlider min={0} max={1000} step={10} value={[price.priceFrom, price.priceTo]}
-                onValueChange={([priceFrom, priceTo]) => setPrice({priceFrom, priceTo})}
+                             onValueChange={([priceFrom, priceTo]) => setPrice({priceFrom, priceTo})}
                 />
             </div>
 
