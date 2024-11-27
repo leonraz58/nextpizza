@@ -4,6 +4,7 @@ import React from 'react';
 
 import {FilterCheckbox, FilterChecboxProps} from './filter-checkbox';
 import {Input} from '../ui/input';
+import {Skeleton} from "@/components/ui";
 
 type Item = FilterChecboxProps;
 
@@ -16,6 +17,8 @@ interface Props {
     className?: string;
     selectedIds?: Set<string>;
     onClickCheckbox?: (value: string) => void;
+    loading?: boolean;
+    name?: string
 }
 
 export const CheckboxFiltersGroup: React.FC<Props> = ({
@@ -27,12 +30,28 @@ export const CheckboxFiltersGroup: React.FC<Props> = ({
                                                           className,
                                                           selectedIds,
                                                           onClickCheckbox,
+                                                          loading,
+                                                          name
                                                       }) => {
     const [showAll, setShowAll] = React.useState(false);
     const [searchValue, setSearchValue] = React.useState('');
 
+    if (loading) {
+        return (
+            <div className={className}>
+                <p className="font-bold mb-3">{title}</p>
+
+                {...Array(limit)
+                    .fill(0)
+                    .map((_, index) => <Skeleton key={index} className="h-6 mb-4 rounded-[8px]"/>)}
+
+                <Skeleton className="w-28 h-6 mb-4 rounded-[8px]"/>
+            </div>
+        );
+    }
+
     const filteredItems = items.filter((item) =>
-      item.text.toLowerCase().includes(searchValue.toLowerCase()),
+        item.text.toLowerCase().includes(searchValue.toLowerCase()),
     );
 
     const list = showAll ? filteredItems : defaultItems.slice(0, limit);
@@ -60,16 +79,17 @@ export const CheckboxFiltersGroup: React.FC<Props> = ({
                         value={item.value}
                         text={item.text}
                         endAdornment={item.endAdornment}
+                        name={name}
                     />
                 ))}
             </div>
 
             {items.length > limit && (
-              <div className={showAll ? 'border-t border-t-neutral-100 mt-4' : ''}>
-                <button onClick={() => setShowAll(!showAll)} className="text-primary mt-3">
-                  {showAll ? 'Скрыть' : '+ Показать все'}
-                </button>
-              </div>
+                <div className={showAll ? 'border-t border-t-neutral-100 mt-4' : ''}>
+                    <button onClick={() => setShowAll(!showAll)} className="text-primary mt-3">
+                        {showAll ? 'Скрыть' : '+ Показать все'}
+                    </button>
+                </div>
             )}
         </div>
     );
