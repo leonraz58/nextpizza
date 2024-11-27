@@ -49,7 +49,7 @@ export const Filters: React.FC<Props> = ({className}) => {
 
         const query = qs.stringify(filters, {arrayFormat: 'comma'})
 
-        router.push(`?${query}`)
+        router.push(`?${query}`, {scroll: false})
     }, [price, pizzaTypes, sizes, selectedIngredients, router]);
 
     return (
