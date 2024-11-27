@@ -15,8 +15,8 @@ interface Props {
 }
 
 interface PriceProps {
-    priceFrom: number;
-    priceTo: number;
+    priceFrom?: number;
+    priceTo?: number;
 }
 
 export const Filters: React.FC<Props> = ({className}) => {
@@ -28,7 +28,7 @@ export const Filters: React.FC<Props> = ({className}) => {
     const [sizes, { toggle: toggleSizes }] = useSet(new Set<string>([]));
     const [pizzaTypes, { toggle: togglePizzaTypes }] = useSet(new Set<string>([]));
 
-    const [price, setPrice] = useState<PriceProps>({priceFrom: 0, priceTo: 1000});
+    const [price, setPrice] = useState<PriceProps>({});
 
     const items = ingredients.map((item) => ({value: String(item.id), text: item.name}));
 
@@ -99,7 +99,7 @@ export const Filters: React.FC<Props> = ({className}) => {
                            onChange={e => updatePrice('priceTo', Number(e.target.value))}
                     />
                 </div>
-                <RangeSlider min={0} max={1000} step={10} value={[price.priceFrom, price.priceTo]}
+                <RangeSlider min={0} max={1000} step={10} value={[price.priceFrom || 0, price.priceTo || 1000]}
                              onValueChange={([priceFrom, priceTo]) => setPrice({priceFrom, priceTo})}
                 />
             </div>
