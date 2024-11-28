@@ -22,7 +22,7 @@ export default async function Home() {
             <Container className="mt-10">
                 <Title text="Все пиццы" size="lg" className="font-extrabold"/>
             </Container>
-            <TopBar/>
+            <TopBar categories={categories.filter(categories => categories.products.length > 0)}/>
             <Container className="mt-10 pb-14">
                 <div className="flex gap-[80px]">
                     <div className="w-[250px]">
