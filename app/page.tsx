@@ -2,8 +2,21 @@ import {Container, Filters} from "@/components/shared";
 import {Title} from "@/components/shared/title";
 import {TopBar} from "@/components/shared/top-bar";
 import {ProductsGroupList} from "@/components/shared/products-group-list";
+import {prisma} from "@/prisma/prisma-client";
 
-export default function Home() {
+export default async function Home() {
+
+    const categories = await prisma.category.findMany({
+        include: {
+            products: {
+                include: {
+                    ingredients: true,
+                    items: true
+                }
+            }
+        }
+    });
+
     return (
         <>
             <Container className="mt-10">
@@ -17,82 +30,14 @@ export default function Home() {
                     </div>
                     <div className="flex-1">
                         <div className="flex flex-col gap-16">
-                            <ProductsGroupList title={"Пиццы"} categoryId={1} items={[
-                                {
-                                    id: 1,
-                                    name: "Говядина с песто",
-                                    imageUrl: 'https://media.dodostatic.net/image/r:292x292/11EF12B2F6AFD043932EFBBAF24F90DF.avif',
-                                    price: 550,
-                                    items: [{price: 550}]
-                                },
-                                {
-                                    id: 1,
-                                    name: "Говядина с песто",
-                                    imageUrl: 'https://media.dodostatic.net/image/r:292x292/11EF12B2F6AFD043932EFBBAF24F90DF.avif',
-                                    price: 550,
-                                    items: [{price: 550}]
-                                },
-                                {
-                                    id: 1,
-                                    name: "Говядина с песто",
-                                    imageUrl: 'https://media.dodostatic.net/image/r:292x292/11EF12B2F6AFD043932EFBBAF24F90DF.avif',
-                                    price: 550,
-                                    items: [{price: 550}]
-                                },
-                                {
-                                    id: 1,
-                                    name: "Говядина с песто",
-                                    imageUrl: 'https://media.dodostatic.net/image/r:292x292/11EF12B2F6AFD043932EFBBAF24F90DF.avif',
-                                    price: 550,
-                                    items: [{price: 550}]
-                                },
-                                {
-                                    id: 1,
-                                    name: "Говядина с песто",
-                                    imageUrl: 'https://media.dodostatic.net/image/r:292x292/11EF12B2F6AFD043932EFBBAF24F90DF.avif',
-                                    price: 550,
-                                    items: [{price: 550}]
-                                },
-                            ]}
-                            />
-                            <ProductsGroupList title={"Комбо"} categoryId={2} items={[
-                                {
-                                    id: 1,
-                                    name: "Говядина с песто",
-                                    imageUrl: 'https://media.dodostatic.net/image/r:292x292/11EF12B2F6AFD043932EFBBAF24F90DF.avif',
-                                    price: 550,
-                                    items: [{price: 550}]
-                                },
-                                {
-                                    id: 1,
-                                    name: "Говядина с песто",
-                                    imageUrl: 'https://media.dodostatic.net/image/r:292x292/11EF12B2F6AFD043932EFBBAF24F90DF.avif',
-                                    price: 550,
-                                    items: [{price: 550}]
-                                },
-                                {
-                                    id: 1,
-                                    name: "Говядина с песто",
-                                    imageUrl: 'https://media.dodostatic.net/image/r:292x292/11EF12B2F6AFD043932EFBBAF24F90DF.avif',
-                                    price: 550,
-                                    items: [{price: 550}]
-                                },
-                                {
-                                    id: 1,
-                                    name: "Говядина с песто",
-                                    imageUrl: 'https://media.dodostatic.net/image/r:292x292/11EF12B2F6AFD043932EFBBAF24F90DF.avif',
-                                    price: 550,
-                                    items: [{price: 550}]
-                                },
-                                {
-                                    id: 1,
-                                    name: "Говядина с песто",
-                                    imageUrl: 'https://media.dodostatic.net/image/r:292x292/11EF12B2F6AFD043932EFBBAF24F90DF.avif',
-                                    price: 550,
-                                    items: [{price: 550}]
-                                },
-                            ]}
-                            />
+                            {categories.map((category) => category.products.length > 0 && (
+                                <ProductsGroupList
+                                    key={category.id}
+                                    title={category.name}
+                                    categoryId={category.id}
+                                    items={category.products}
+                                />
+                            ))}
                         </div>
                     </div>
                 </div>
