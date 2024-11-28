@@ -37,8 +37,8 @@ export const useFilters = (): ReturnProps => {
     const [pizzaTypes, { toggle: togglePizzaTypes }] = useSet(new Set<string>(searchParams.has('pizzaTypes') ? searchParams.get('pizzaTypes')?.split(',') : []));
 
     const [prices, setPrices] = useState<PriceProps>({
-        priceFrom: Number(searchParams.get("priceFrom")),
-        priceTo: Number(searchParams.get("priceTo")),
+        priceFrom: Number(searchParams.get("priceFrom")) || undefined,
+        priceTo: Number(searchParams.get("priceTo")) || undefined,
     });
 
     const updatePrice = (name: keyof PriceProps, value: number) => {
