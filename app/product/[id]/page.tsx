@@ -1,6 +1,6 @@
 import {prisma} from "@/prisma/prisma-client";
 import {notFound} from "next/navigation";
-import {Container, ProductImage, Title} from "@/components/shared";
+import {Container, GroupVariants, ProductImage, Title} from "@/components/shared";
 
 export default async function ProductPage({ params: { id } }: { params: { id: string } }) {
 
@@ -19,6 +19,24 @@ export default async function ProductPage({ params: { id } }: { params: { id: st
                     <Title text={product.name} size="md" className={"font-extrabold mb-1"}/>
 
                     <p className={"text-gray-400"}>Lorem ipsum dolor sit amet</p>
+
+                    <GroupVariants
+                        selectedValue={'2'}
+                        items={[
+                        {
+                            name: 'Маленькая',
+                            value: '1'
+                        },
+                        {
+                            name: 'Средняя',
+                            value: '2'
+                        },
+                        {
+                            name: 'Большая',
+                            value: '3',
+                            disabled: true,
+                        },
+                    ]}/>
                 </div>
             </div>
 
