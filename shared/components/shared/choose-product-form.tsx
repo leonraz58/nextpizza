@@ -2,8 +2,9 @@
 
 import React from 'react';
 import {cn} from "@/shared/lib/utils";
-import { Title } from './index';
+import {GroupVariants, Title} from './index';
 import {Button} from "../ui";
+import {pizzaSizes} from "@/shared/constants/pizza";
 
 interface Props {
     imageUrl: string;
