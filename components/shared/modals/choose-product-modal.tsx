@@ -6,7 +6,7 @@ import {Dialog} from "@/components/ui";
 import {DialogContent} from "@/components/ui/dialog";
 import {cn} from "@/lib/utils";
 import {Product} from "@prisma/client";
-import {Title} from "@/components/shared";
+import {ChooseProductForm} from "@/components/shared/choose-product-form";
 
 
 interface Props {
@@ -24,7 +24,7 @@ export const ChooseProductModal: React.FC<Props> = ({ product, className }) => {
           'p-0 w-[1060px] max-w-[1060px] min-h-[500px] bg-white overflow-hidden',
           className,
         )}>
-        <Title text={product.name}></Title>
+          <ChooseProductForm imageUrl={product.imageUrl} name={product.name} ingredients={[]} />
       </DialogContent>
     </Dialog>
   );
