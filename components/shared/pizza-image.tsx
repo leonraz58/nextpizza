@@ -4,10 +4,10 @@ import {cn} from "@/lib/utils";
 interface Props {
     className?: string;
     imageUrl: string;
-    size: number
+    size: 20 | 30 | 40
 }
 
-export const ProductImage: React.FC<Props> = ({imageUrl, className, size}) => {
+export const PizzaImage: React.FC<Props> = ({imageUrl, className, size}) => {
     return (
         <div className={cn('flex items-center justify-center flex-1 relative w-full', className)}>
             <img
@@ -28,4 +28,4 @@ export const ProductImage: React.FC<Props> = ({imageUrl, className, size}) => {
     );
 };
 
-export default ProductImage;
+export default PizzaImage;

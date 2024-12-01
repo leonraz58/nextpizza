@@ -5,8 +5,9 @@ import { useRouter } from 'next/navigation';
 import {Dialog} from "@/components/ui";
 import {DialogContent} from "@/components/ui/dialog";
 import {cn} from "@/lib/utils";
-import {ChooseProductForm} from "@/components/shared/choose-product-form";
 import {ProductWithRelations} from "@/@types/prisma";
+import {ChoosePizzaForm} from "@/components/shared";
+import {ChooseProductForm} from "@/components/shared/choose-product-form";
 
 
 interface Props {
@@ -26,7 +27,8 @@ export const ChooseProductModal: React.FC<Props> = ({ product, className }) => {
           'p-0 w-[1060px] max-w-[1060px] min-h-[500px] bg-white overflow-hidden',
           className,
         )}>
-        {isPizzaForm ? ('PizzaForm') : <ChooseProductForm imageUrl={product.imageUrl} name={product.name} ingredients={[]} />}
+        {isPizzaForm ? (<ChoosePizzaForm imageUrl={product.imageUrl} name={product.name} ingredients={[]}/>)
+            : <ChooseProductForm imageUrl={product.imageUrl} name={product.name} ingredients={[]} />}
 
       </DialogContent>
     </Dialog>
