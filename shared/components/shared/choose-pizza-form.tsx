@@ -4,9 +4,9 @@ import React from 'react';
 import {cn} from "@/shared/lib/utils";
 import {GroupVariants, IngredientItem, PizzaImage, Title} from './index';
 import {Button} from "../ui";
-import {mapPizzaType, PizzaSize, PizzaType, pizzaTypes} from "@/shared/constants/pizza";
+import {PizzaSize, PizzaType, pizzaTypes} from "@/shared/constants/pizza";
 import {Ingredient, ProductItem} from "@prisma/client";
-import {calcTotalPizzaPrice} from "@/shared/lib";
+import {getPizzaDetails} from "@/shared/lib";
 import {usePizzaOptions} from "@/shared/hooks";
 
 interface Props {
@@ -28,9 +28,7 @@ export const ChoosePizzaForm: React.FC<Props> = ({imageUrl, name, ingredients, i
         setType,
         addIngredient } = usePizzaOptions(items)
 
-    const textDetails = `${size} см, ${mapPizzaType[type]} пицца`
-
-    const totalPrice = calcTotalPizzaPrice(type, size, items, ingredients, selectedIngredients)
+    const { totalPrice, textDetails } = getPizzaDetails(type, size, items, ingredients, selectedIngredients)
 
     const handleClickAdd = () => {
         onClickAddCart?.()
