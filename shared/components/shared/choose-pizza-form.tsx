@@ -4,10 +4,10 @@ import React, {useEffect, useState} from 'react';
 import {cn} from "@/shared/lib/utils";
 import {GroupVariants, IngredientItem, PizzaImage, Title} from './index';
 import {Button} from "../ui";
-import {mapPizzaType, PizzaSize, pizzaSizes, PizzaType, pizzaTypes} from "@/shared/constants/pizza";
+import {mapPizzaType, PizzaSize, PizzaType, pizzaTypes} from "@/shared/constants/pizza";
 import {Ingredient, ProductItem} from "@prisma/client";
 import {useSet} from "react-use";
-import {calcTotalPizzaPrice} from "@/shared/lib";
+import {calcTotalPizzaPrice, getAvailablePizzaSizes} from "@/shared/lib";
 
 interface Props {
     imageUrl: string;
@@ -38,12 +38,7 @@ export const ChoosePizzaForm: React.FC<Props> = ({imageUrl, name, ingredients, i
         })
     }
 
-    const filteredPizzaByType = items.filter((item) => item.pizzaType === type)
-    const availablePizzaSizes = pizzaSizes.map(item => ({
-        name: item.name,
-        value: item.value,
-        disabled: !filteredPizzaByType.some(pizza => Number(pizza.size) === Number(item.value))
-    }))
+    const availablePizzaSizes = getAvailablePizzaSizes(type, items)
 
     useEffect(() => {
         const availableSize = availablePizzaSizes?.find(item => !item.disabled)
