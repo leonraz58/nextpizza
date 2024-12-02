@@ -7,6 +7,7 @@ import {Button} from "../ui";
 import {mapPizzaType, PizzaSize, pizzaSizes, PizzaType, pizzaTypes} from "@/shared/constants/pizza";
 import {Ingredient, ProductItem} from "@prisma/client";
 import {useSet} from "react-use";
+import {calcTotalPizzaPrice} from "@/shared/lib";
 
 interface Props {
     imageUrl: string;
@@ -26,11 +27,7 @@ export const ChoosePizzaForm: React.FC<Props> = ({imageUrl, name, ingredients, i
 
     const textDetails = `${size} см, ${mapPizzaType[type]} пицца`
 
-    const pizzaPrice = items.find(item => item.pizzaType === type && item.size === size)?.price || 0
-    const totalIngredientsPrice = ingredients
-        .filter(ingredient => selectedIngredients.has(ingredient.id))
-        .reduce((acc, ingredient) => acc + ingredient.price, 0)
-    const totalPrice = pizzaPrice + totalIngredientsPrice
+    const totalPrice = calcTotalPizzaPrice(type, size, items, ingredients, selectedIngredients)
 
     const handleClickAdd = () => {
         onClickAddCart?.()
