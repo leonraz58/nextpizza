@@ -1,10 +1,9 @@
 'use client';
 
-import React from 'react';
+import React, {useEffect} from 'react';
 
 import {
     Sheet,
-    SheetClose,
     SheetContent,
     SheetFooter,
     SheetHeader,
@@ -16,8 +15,18 @@ import {Button} from '../ui';
 import {ArrowRight} from 'lucide-react';
 import {CartDrawerItem} from "@/shared/components/shared/cart-drawer-item";
 import {getCartItemDetails} from "@/shared/lib";
+import {useCartStore} from "@/shared/store";
+import {PizzaSize, PizzaType} from "@/shared/constants/pizza";
 
 export const CartDrawer: React.FC<React.PropsWithChildren> = ({children}) => {
+
+    const items = useCartStore(state => state.items)
+    const fetchCartItems = useCartStore(state => state.fetchCartItems)
+    const totalAmount = useCartStore(state => state.totalAmount)
+
+    useEffect(()=>{
+        fetchCartItems()
+    },[])
 
     return (
         <Sheet>
@@ -26,38 +35,28 @@ export const CartDrawer: React.FC<React.PropsWithChildren> = ({children}) => {
             <SheetContent className="flex flex-col justify-between pb-0 bg-[#F4F1EE]">
                 <SheetHeader>
                     <SheetTitle>
-                        В корзине <span className="font-bold">3 товара</span>
+                        В корзине <span className="font-bold">{items.length}</span>
                     </SheetTitle>
                 </SheetHeader>
 
                 <div className="-mx-6 mt-5 overflow-auto flex-1">
-                    <div className="mb-2">
-                        <CartDrawerItem id={1}
-                                        imageUrl={'https://media.dodostatic.net/image/r:292x292/11EF12B2F6AFD043932EFBBAF24F90DF.avif'}
-                                        details={getCartItemDetails(2, 30, [{name: 'Цыпленок'}, {name: 'Сыр'}])}
-                                        name={'Чоризо фреш'}
-                                        price={419}
-                                        quantity={1}
-                        />
-                    </div>
-                    <div className="mb-2">
-                        <CartDrawerItem id={1}
-                                        imageUrl={'https://media.dodostatic.net/image/r:292x292/11EF12B2F6AFD043932EFBBAF24F90DF.avif'}
-                                        details={getCartItemDetails(2, 30, [{name: 'Цыпленок'}, {name: 'Сыр'}])}
-                                        name={'Чоризо фреш'}
-                                        price={419}
-                                        quantity={1}
-                        />
-                    </div>
-                    <div className="mb-2">
-                        <CartDrawerItem id={1}
-                                        imageUrl={'https://media.dodostatic.net/image/r:292x292/11EF12B2F6AFD043932EFBBAF24F90DF.avif'}
-                                        details={getCartItemDetails(2, 30, [{name: 'Цыпленок'}, {name: 'Сыр'}])}
-                                        name={'Чоризо фреш'}
-                                        price={419}
-                                        quantity={1}
-                        />
-                    </div>
+                    {items.map((item) => (
+                        <div key={item.id} className="mb-2">
+                            <CartDrawerItem
+                                id={item.id}
+                                imageUrl={item.imageUrl}
+                                details={getCartItemDetails(
+                                    item.ingredients,
+                                    item.pizzaType as PizzaType,
+                                    item.pizzaSize as PizzaSize,
+                                )}
+                                //disabled={item.disabled}
+                                name={item.name}
+                                price={item.price}
+                                quantity={item.quantity}
+                            />
+                        </div>
+                    ))}
                 </div>
 
                 <SheetFooter className="-mx-6 bg-white p-8">
@@ -68,7 +67,7 @@ export const CartDrawer: React.FC<React.PropsWithChildren> = ({children}) => {
                       <div className="flex-1 border-b border-dashed border-b-neutral-200 relative -top-1 mx-2"/>
                     </span>
 
-                            <span className="font-bold text-lg">500 ₽</span>
+                            <span className="font-bold text-lg">{totalAmount}</span>
                         </div>
 
                         <Link href="/checkout">
