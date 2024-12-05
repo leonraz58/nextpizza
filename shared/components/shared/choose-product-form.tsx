@@ -2,21 +2,18 @@
 
 import React from 'react';
 import {cn} from "@/shared/lib/utils";
-import {GroupVariants, Title} from './index';
+import {Title} from './index';
 import {Button} from "../ui";
-import {pizzaSizes} from "@/shared/constants/pizza";
 
 interface Props {
     imageUrl: string;
     name: string;
     className?: string;
-    onClickAdd?: VoidFunction
+    price: number
+    onSubmit?: VoidFunction;
 }
 
-export const ChooseProductForm: React.FC<Props> = ({imageUrl, name, className, onClickAdd}) => {
-
-    const textDetails = "30см, традиционное тесто 30"
-    const totalPrice = '250р'
+export const ChooseProductForm: React.FC<Props> = ({imageUrl, name, className, onSubmit, price}) => {
 
     return (
         <div className={cn(className, 'flex flex-1')}>
@@ -31,11 +28,10 @@ export const ChooseProductForm: React.FC<Props> = ({imageUrl, name, className, o
             <div className="w-[490px] bg-[#f7f6f5] p-7">
                 <Title text={name} size="md" className="font-extrabold mb-1"/>
 
-                <p className="text-gray-400">{textDetails}</p>
-
                 <Button
+                    onClick={() => onSubmit?.()}
                     className="h-[55px] px-10 text-base rounded-[18px] w-full mt-10">
-                    Добавить в корзину за {totalPrice} ₽
+                    Добавить в корзину за {price} ₽
                 </Button>
             </div>
         </div>
