@@ -22,6 +22,7 @@ export const ChooseProductModal: React.FC<Props> = ({product, className}) => {
     const firstItem = product.items[0]
     const isPizzaForm = Boolean(firstItem.pizzaType)
     const addCartItem = useCartStore(store => store.addCartItem)
+    const loading = useCartStore(store => store.loading)
 
     const onAddProduct = () => {
         addCartItem({
@@ -36,11 +37,11 @@ export const ChooseProductModal: React.FC<Props> = ({product, className}) => {
                 ingredients
             })
             toast.success("Пицца добавлена в корзину")
+            router.back()
         } catch (error) {
             toast.error('Не удалось добавить пиццу')
             console.error(error)
         }
-
 
     }
 
@@ -53,9 +54,20 @@ export const ChooseProductModal: React.FC<Props> = ({product, className}) => {
                     className,
                 )}>
                 {isPizzaForm ? (
-                        <ChoosePizzaForm imageUrl={product.imageUrl} name={product.name} ingredients={product.ingredients}
-                                         items={product.items} onSubmit={onAddPizza}/>)
-                    : <ChooseProductForm imageUrl={product.imageUrl} name={product.name} onSubmit={onAddProduct} price={firstItem.price}/>}
+                        <ChoosePizzaForm imageUrl={product.imageUrl}
+                                         name={product.name}
+                                         ingredients={product.ingredients}
+                                         items={product.items}
+                                         onSubmit={onAddPizza}
+                                         loading={loading}
+                        />)
+                    : <ChooseProductForm imageUrl={product.imageUrl}
+                                         name={product.name}
+                                         onSubmit={onAddProduct}
+                                         price={firstItem.price}
+                                         loading={loading}
+                    />
+                }
 
             </DialogContent>
         </Dialog>
