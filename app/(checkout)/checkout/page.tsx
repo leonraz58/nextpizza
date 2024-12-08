@@ -1,10 +1,32 @@
 'use client';
 
-import {CheckoutItem, CheckoutItemDetails, Container, Title, WhiteBlock} from "@/shared/components/shared";
+import {
+    CheckoutItem,
+    CheckoutItemDetails,
+    Container,
+    Title,
+    WhiteBlock
+} from "@/shared/components/shared";
 import {Button, Input, Textarea} from "@/shared/components/ui";
 import {ArrowRight, Package, Percent, Truck} from "lucide-react";
+import {useCart} from "@/shared/hooks";
+import {PizzaSize, PizzaType} from "@/shared/constants/pizza";
+import {getCartItemDetails} from "@/shared/lib";
+
+const VAT = 15;
+const DELIVERY_PRICE = 250;
 
 export default function CheckoutPage() {
+
+    const { totalAmount, updateItemQuantity, items, removeCartItem, loading } = useCart();
+
+    const onClickCountButton = (id: number, quantity: number, type: 'plus' | 'minus') => {
+        const newQuantity = type === 'plus' ? quantity + 1 : quantity - 1;
+        updateItemQuantity(id, newQuantity);
+    };
+
+    const vatPrice = (totalAmount * VAT) / 100;
+    const totalPrice = totalAmount + DELIVERY_PRICE + vatPrice;
 
     return (
         <Container className="mt-10">
@@ -13,20 +35,24 @@ export default function CheckoutPage() {
                 <div className={'flex flex-col gap-10 flex-1 mb-20'}>
                     <WhiteBlock title="1. Корзина">
                         <div className="flex flex-col gap-5">
-                            <CheckoutItem id={1}
-                                          imageUrl={'https://media.dodostatic.net/image/r:292x292/11EF9C1DAAFCF3529A62947B9522A8FE.avif'}
-                                          details={'some details'}
-                                          name={'Чоризо фреш'}
-                                          price={125}
-                                          quantity={5}
-                            />
-                            <CheckoutItem id={2}
-                                          imageUrl={'https://media.dodostatic.net/image/r:292x292/11EF9C1DAAFCF3529A62947B9522A8FE.avif'}
-                                          details={'some details'}
-                                          name={'Чоризо фреш'}
-                                          price={125}
-                                          quantity={5}
-                            />
+                            {items.map((item) => (
+                                <CheckoutItem
+                                    key={item.id}
+                                    id={item.id}
+                                    imageUrl={item.imageUrl}
+                                    details={getCartItemDetails(
+                                        item.ingredients,
+                                        item.pizzaType as PizzaType,
+                                        item.pizzaSize as PizzaSize,
+                                    )}
+                                    name={item.name}
+                                    price={item.price}
+                                    quantity={item.quantity}
+                                    disabled={item.disabled}
+                                    onClickCountButton={(type) => onClickCountButton(item.id, item.quantity, type)}
+                                    onClickRemove={() => removeCartItem(item.id)}
+                                />
+                            ))}
                         </div>
                     </WhiteBlock>
                     <WhiteBlock title="2. Персональные данные">
@@ -55,7 +81,7 @@ export default function CheckoutPage() {
                     <WhiteBlock className={'p-6 sticky top-4'}>
                         <div className="flex flex-col gap-1">
                             <span className="text-xl">Итого:</span>
-                            <span className="h-11 text-[34px] font-extrabold">3333 ₽</span>
+                            <span className="h-11 text-[34px] font-extrabold">{totalPrice}</span>
                         </div>
 
                         <CheckoutItemDetails
@@ -65,7 +91,7 @@ export default function CheckoutPage() {
                                     Стоимость корзины:
                                 </div>
                             }
-                            value={`555р`}
+                            value={`${totalAmount} ₽`}
                         />
                         <CheckoutItemDetails
                             title={
@@ -74,7 +100,7 @@ export default function CheckoutPage() {
                                     Налоги:
                                 </div>
                             }
-                            value={`555р`}
+                            value={`${vatPrice} ₽`}
                         />
                         <CheckoutItemDetails
                             title={
@@ -83,7 +109,7 @@ export default function CheckoutPage() {
                                     Доставка:
                                 </div>
                             }
-                            value={`555р`}
+                            value={`${DELIVERY_PRICE} ₽`}
                         />
 
                         <Button
