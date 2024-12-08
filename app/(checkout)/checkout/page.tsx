@@ -1,7 +1,8 @@
 'use client';
 
-import {Container, Title, WhiteBlock} from "@/shared/components/shared";
-import {Input, Textarea} from "@/shared/components/ui";
+import {CheckoutItemDetails, Container, Title, WhiteBlock} from "@/shared/components/shared";
+import {Button, Input, Textarea} from "@/shared/components/ui";
+import {ArrowRight, Package, Percent, Truck} from "lucide-react";
 
 export default function CheckoutPage() {
 
@@ -42,15 +43,41 @@ export default function CheckoutPage() {
                             <span className="h-11 text-[34px] font-extrabold">3333 ₽</span>
                         </div>
 
-                        <div className={'flex my-4'}>
-                            <span className="flex flex-1 text-lg text-neutral-500">
-                                Text
-                                <div
-                                    className="flex-1 border-b border-dashed border-b-neutral-200 relative -top-1 mx-2"/>
-                            </span>
+                        <CheckoutItemDetails
+                            title={
+                                <div className="flex items-center">
+                                    <Package size={18} className="mr-2 text-gray-400"/>
+                                    Стоимость корзины:
+                                </div>
+                            }
+                            value={`555р`}
+                        />
+                        <CheckoutItemDetails
+                            title={
+                                <div className="flex items-center">
+                                    <Percent size={18} className="mr-2 text-gray-400"/>
+                                    Налоги:
+                                </div>
+                            }
+                            value={`555р`}
+                        />
+                        <CheckoutItemDetails
+                            title={
+                                <div className="flex items-center">
+                                    <Truck size={18} className="mr-2 text-gray-400"/>
+                                    Доставка:
+                                </div>
+                            }
+                            value={`555р`}
+                        />
 
-                            <span className="font-bold text-lg">Value</span>
-                        </div>
+                        <Button
+                            type="submit"
+                            className="w-full h-14 rounded-2xl mt-6 text-base font-bold">
+                            Перейти к оплате
+                            <ArrowRight className="w-5 ml-2" />
+                        </Button>
+
                     </WhiteBlock>
                 </div>
             </div>
