@@ -31,7 +31,7 @@ export default function CheckoutPage() {
     });
 
     const onSubmit = async (data: CheckoutFormValues) => {
-        console.log('aaa')
+        console.log(data)
     };
 
     const onClickCountButton = (id: number, quantity: number, type: 'plus' | 'minus') => {
