@@ -9,10 +9,13 @@ import React from "react";
 import {CartButton} from "@/shared/components/shared/cart-button";
 
 interface Props {
+    hasSearch?: boolean;
+    hasCart?: boolean;
     className?: string;
 }
 
-export const Header: React.FC<Props> = ({className}) => {
+
+export const Header: React.FC<Props> = ({hasSearch = true, hasCart = true, className}) => {
 
     return (
         <header className={cn('border-b border-gray-100', className)}>
@@ -28,9 +31,11 @@ export const Header: React.FC<Props> = ({className}) => {
                 </Link>
 
 
-                <div className="mx-10 flex-1">
-                    <SearchInput/>
-                </div>
+                {hasSearch && (
+                    <div className="mx-10 flex-1">
+                        <SearchInput />
+                    </div>
+                )}
 
                 <div className="flex items-center gap-1">
                     <Button variant="outline">
@@ -38,7 +43,7 @@ export const Header: React.FC<Props> = ({className}) => {
                         Войти
                     </Button>
 
-                    <CartButton/>
+                    {hasCart && <CartButton />}
                 </div>
             </Container>
         </header>
