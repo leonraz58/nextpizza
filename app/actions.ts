@@ -4,7 +4,7 @@ import {OrderStatus} from "@prisma/client";
  import {prisma} from "@/prisma/prisma-client";
  import {CheckoutFormValues} from "@/shared/constants";
  import {cookies} from "next/headers";
- import {sendEmail} from "@/shared/lib";
+ import {createPayment, sendEmail} from "@/shared/lib";
  import {PayOrderTemplate} from "@/shared/components";
 
  export async function createOrder(data: CheckoutFormValues) {
@@ -71,13 +71,34 @@ import {OrderStatus} from "@prisma/client";
              },
          });
 
+         // очищаем список товаров
          await prisma.cartItem.deleteMany({
              where: {
                  cartId: userCart.id,
              },
          });
 
-         //сделать создание paymentUrl
+         //создаем платеж
+         const paymentData = await createPayment({
+             amount: order.totalAmount,
+             orderId: order.id,
+             description: 'Оплата заказа #' + order.id,
+         });
+
+         if (!paymentData) {
+             throw new Error('Payment data not found');
+         }
+
+         await prisma.order.update({
+             where: {
+                 id: order.id,
+             },
+             data: {
+                 paymentId: paymentData.id,
+             },
+         });
+
+         const paymentUrl = paymentData.confirmation.confirmation_url;
 
          await sendEmail(
              data.email,
@@ -85,11 +106,11 @@ import {OrderStatus} from "@prisma/client";
              PayOrderTemplate({
                  orderId: order.id,
                  totalAmount: order.totalAmount,
-                 paymentUrl: 'https://github.com/',
+                 paymentUrl,
              }),
          );
 
-         //return paymentUrl;
+         return paymentUrl;
      } catch (err) {
          console.log('[CreateOrder] Server error', err);
      }
