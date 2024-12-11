@@ -4,15 +4,12 @@ import {Container} from "@/shared/components/shared/container";
 import Link from "next/link";
 import {cn} from "@/shared/lib/utils";
 import Image from 'next/image';
-import {Button} from "@/shared/components/ui/button";
-import {User} from "lucide-react";
 import {SearchInput} from "./search-input";
 import React from "react";
 import {CartButton} from "@/shared/components/shared/cart-button";
 import {useRouter, useSearchParams} from "next/navigation";
 import toast from "react-hot-toast";
-import {signIn, useSession} from "next-auth/react";
-import {ProfileButton} from "@/shared/components";
+import {AuthModal, ProfileButton} from "@/shared/components";
 
 interface Props {
     hasSearch?: boolean;
@@ -23,10 +20,8 @@ interface Props {
 
 export const Header: React.FC<Props> = ({hasSearch = true, hasCart = true, className}) => {
 
-    const {data: session} = useSession();
-    console.log(session)
-
     const router = useRouter();
+    const [openAuthModal, setOpenAuthModal] = React.useState(false);
     const searchParams = useSearchParams();
 
     React.useEffect(() => {
@@ -66,13 +61,12 @@ export const Header: React.FC<Props> = ({hasSearch = true, hasCart = true, class
                     </div>
                 )}
 
-                <div className="flex items-center gap-1">
-                    <ProfileButton onClickSignIn={() => {signIn('github', {
-                        callbackUrl: '/',
-                        redirect: true
-                    })}}/>
+                <div className="flex items-center gap-3">
+                    <AuthModal open={openAuthModal} onClose={() => setOpenAuthModal(false)}/>
 
-                    {hasCart && <CartButton />}
+                    <ProfileButton onClickSignIn={() => setOpenAuthModal(true)}/>
+
+                    {hasCart && <CartButton/>}
                 </div>
             </Container>
         </header>
