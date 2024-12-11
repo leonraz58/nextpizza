@@ -11,6 +11,7 @@ import React from "react";
 import {CartButton} from "@/shared/components/shared/cart-button";
 import {useRouter, useSearchParams} from "next/navigation";
 import toast from "react-hot-toast";
+import {signIn, useSession} from "next-auth/react";
 
 interface Props {
     hasSearch?: boolean;
@@ -20,6 +21,9 @@ interface Props {
 
 
 export const Header: React.FC<Props> = ({hasSearch = true, hasCart = true, className}) => {
+
+    const {data: session} = useSession();
+    console.log(session)
 
     const router = useRouter();
     const searchParams = useSearchParams();
@@ -62,7 +66,12 @@ export const Header: React.FC<Props> = ({hasSearch = true, hasCart = true, class
                 )}
 
                 <div className="flex items-center gap-1">
-                    <Button variant="outline">
+                    <Button variant="outline"
+                        onClick={() => {signIn('github', {
+                            callbackUrl: '/',
+                            redirect: true
+                        })}}
+                    >
                         <User size={16}/>
                         Войти
                     </Button>
